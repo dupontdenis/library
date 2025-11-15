@@ -52,4 +52,16 @@ Open a browser to [http://localhost:3000/](http://localhost:3000/) to view the l
 
 ---
 
+## Debugging
+
+To enable debug tracing for controllers, run the app with the following environment variable:
+
+```
+DEBUG=bookController,authorController npm start
+```
+
+You will see debug output for all controller function calls in your terminal.
+
+---
+
 For more information and a step-by-step guide, see the official [Mozilla Express Local Library Tutorial](https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/Tutorial_local_library_website).

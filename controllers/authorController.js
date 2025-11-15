@@ -1,9 +1,12 @@
 import Author from "../models/author.js";
 import Book from "../models/book.js";
 import { body, validationResult } from "express-validator";
+import debugLib from "debug";
+const debug = debugLib("authorController");
 
 // Display list of all Authors.
 const author_list = async (req, res, next) => {
+  debug("author_list called");
   try {
     const list_authors = await Author.find().sort({ family_name: 1 }).exec();
     res.render("author_list", {
@@ -17,6 +20,7 @@ const author_list = async (req, res, next) => {
 
 // Display detail page for a specific Author.
 const author_detail = async (req, res, next) => {
+  debug("author_detail called");
   try {
     const author = await Author.findById(req.params.id).exec();
     const author_books = await Book.find(
@@ -40,11 +44,17 @@ const author_detail = async (req, res, next) => {
 
 // Display Author create form on GET.
 const author_create_get = async (req, res, next) => {
+  debug("author_create_get called");
   res.render("author_form", { title: "Create Author" });
 };
 
 // Handle Author create on POST.
 const author_create_post = [
+  // debug for author_create_post
+  (req, res, next) => {
+    debug("author_create_post called");
+    next();
+  },
   // Validate and sanitize fields.
   body("first_name")
     .trim()
@@ -105,6 +115,7 @@ const author_create_post = [
 
 // Display Author delete form on GET.
 const author_delete_get = async (req, res, next) => {
+  debug("author_delete_get called");
   try {
     const details = Promise.all([
       Author.findById(req.params.id),
@@ -130,6 +141,7 @@ const author_delete_get = async (req, res, next) => {
 
 // Handle Author delete on POST.
 const author_delete_post = async (req, res, next) => {
+  debug("author_delete_post called");
   const details = Promise.all([
     Author.findById(req.body.authorid),
     Book.find({ author: req.body.authorid }),
@@ -195,6 +207,7 @@ const author_delete_post = async (req, res, next) => {
 
 // Display Author update form on GET.
 const author_update_get = async (req, res, next) => {
+  debug("author_update_get called");
   try {
     const author = await Author.findById(req.params.id);
     if (author == null) {
@@ -212,6 +225,11 @@ const author_update_get = async (req, res, next) => {
 
 // Handle Author update on POST.
 const author_update_post = [
+  // debug for author_update_post
+  (req, res, next) => {
+    debug("author_update_post called");
+    next();
+  },
   // Validate and santize fields.
   body("first_name")
     .trim()

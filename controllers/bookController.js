@@ -2,8 +2,11 @@ import Book from "../models/book.js";
 import Author from "../models/author.js";
 import { body, validationResult } from "express-validator";
 import async from "async";
+import debugLib from "debug";
+const debug = debugLib("bookController");
 
 const index = async (req, res) => {
+  debug("index called");
   const details = Promise.all([
     Author.countDocuments({}),
     Book.countDocuments({}),
@@ -31,6 +34,7 @@ const index = async (req, res) => {
 
 // Display list of all books.
 const book_list = async (req, res, next) => {
+  debug("book_list called");
   try {
     const list_books = await Book.find({}, "title author")
       .sort({ title: 1 })
@@ -43,6 +47,7 @@ const book_list = async (req, res, next) => {
 
 // Display detail page for a specific book.
 const book_detail = async (req, res, next) => {
+  debug("book_detail called");
   try {
     const book = await Book.findById(req.params.id).populate("author");
     if (!book) {
@@ -61,6 +66,7 @@ const book_detail = async (req, res, next) => {
 
 // Display book create form on GET.
 const book_create_get = async (req, res, next) => {
+  debug("book_create_get called");
   try {
     const authors = await Author.find();
     res.render("book_form", {
@@ -74,6 +80,11 @@ const book_create_get = async (req, res, next) => {
 
 // Handle book create on POST.
 const book_create_post = [
+  // debug for book_create_post
+  (req, res, next) => {
+    debug("book_create_post called");
+    next();
+  },
   // Validate and sanitize fields.
   body("title", "Title must not be empty.")
     .trim()
@@ -135,6 +146,7 @@ const book_create_post = [
 
 // Display book delete form on GET.
 const book_delete_get = async (req, res, next) => {
+  debug("book_delete_get called");
   try {
     const book = await Book.findById(req.params.id).populate("author");
     if (!book) {
@@ -151,6 +163,7 @@ const book_delete_get = async (req, res, next) => {
 
 // Handle book delete on POST.
 const book_delete_post = async (req, res, next) => {
+  debug("book_delete_post called");
   try {
     const book = await Book.findById(req.params.id).populate("author");
     if (!book) {
@@ -165,6 +178,7 @@ const book_delete_post = async (req, res, next) => {
 
 // Display book update form on GET.
 const book_update_get = async (req, res, next) => {
+  debug("book_update_get called");
   try {
     const [book, authors] = await Promise.all([
       Book.findById(req.params.id).populate("author"),
@@ -187,6 +201,11 @@ const book_update_get = async (req, res, next) => {
 
 // Handle book update on POST.
 const book_update_post = [
+  // debug for book_update_post
+  (req, res, next) => {
+    debug("book_update_post called");
+    next();
+  },
   // Validate and sanitize fields.
   body("title", "Title must not be empty.")
     .trim()
