@@ -84,13 +84,9 @@ const author_create_post = [
     // Extract the validation errors from a request.
     const errors = validationResult(req);
 
-    // Create Author object with escaped and trimmed data
-    const author = new Author({
-      first_name: req.body.first_name,
-      family_name: req.body.family_name,
-      date_of_birth: req.body.date_of_birth,
-      date_of_death: req.body.date_of_death,
-    });
+    // Create Author object with escaped and trimmed data using spread
+    // (req.body fields are sanitized by express-validator above)
+    const author = new Author({ ...req.body });
 
     if (!errors.isEmpty()) {
       // There are errors. Render form again with sanitized values/errors messages.
@@ -259,14 +255,8 @@ const author_update_post = [
     // Extract the validation errors from a request.
     const errors = validationResult(req);
 
-    // Create Author object with escaped and trimmed data (and the old id!)
-    const author = new Author({
-      first_name: req.body.first_name,
-      family_name: req.body.family_name,
-      date_of_birth: req.body.date_of_birth,
-      date_of_death: req.body.date_of_death,
-      _id: req.params.id,
-    });
+    // Create Author object with escaped and trimmed data (and the old id) using spread
+    const author = new Author({ ...req.body, _id: req.params.id });
 
     if (!errors.isEmpty()) {
       // There are errors. Render the form again with sanitized values and error messages.

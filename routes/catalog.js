@@ -20,7 +20,6 @@ router
   .route("/book/:id/delete")
   .get(book_controller.book_delete_get)
   .post(book_controller.book_delete_post);
-//
 
 // GET request to update Book.
 router

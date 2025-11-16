@@ -7,7 +7,6 @@ import cookieParser from "cookie-parser";
 import logger from "morgan";
 
 import indexRouter from "./routes/index.js";
-import usersRouter from "./routes/users.js";
 import catalogRouter from "./routes/catalog.js";
 
 import compression from "compression";

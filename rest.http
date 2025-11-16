@@ -1,0 +1,38 @@
+### REST Client requests for Library app
+
+# 1) Create book (JSON API) - POST /api/books
+# Note: ensure the API router is mounted in app.js (app.use('/api', apiRouter)) and that /routes/api.js exists.
+# Replace <authorId> with a real author _id from your MongoDB
+POST http://localhost:3000/api/books
+Content-Type: application/json
+
+{
+  "title": "REST Client Book",
+  "author": "<authorId>",
+  "summary": "Created via REST Client",
+  "isbn": "REST-123456"
+}
+
+###
+
+# 2) Create book (form submit) - POST /catalog/book/create
+# Simulates the HTML form submit (application/x-www-form-urlencoded)
+POST http://localhost:3000/catalog/book/create
+Content-Type: application/x-www-form-urlencoded
+
+title=REST+Form+Book&author=<authorId>&summary=Form+submission&isbn=FORM-987654
+
+###
+
+# 3) Get list of books (HTML)
+GET http://localhost:3000/catalog/books
+
+###
+
+# 4) (Optional) Get book detail - replace <bookId>
+GET http://localhost:3000/catalog/book/<bookId>
+
+# Usage notes:
+# - Start the server with `npm start` or `npm run devstart`.
+# - Use the VS Code REST Client extension to run these requests directly from this file (click "Send Request").
+# - If the JSON API request returns 404, check that `routes/api.js` exists and `app.js` mounts it with `app.use('/api', apiRouter)`.
